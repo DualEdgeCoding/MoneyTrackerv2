@@ -1,0 +1,19 @@
+<div class="container">
+    {{#each transactions}}
+        <div class="card transaction">
+            <div class="card-body">
+                <h4 class="card-title">{{type}}</h4>
+                <div class="inline-block">
+                    <h5 class="card-subtitle">{{purpose}}</h5>
+                    <p class="text-right">{{amount}}</p>
+                </div>
+                <p class="card-text">{{description}}</p>
+                <br>
+                <p>ID: {{id}}</p>
+                <p class="card-footer text-muted">{{date}}</p>
+            </div>
+        </div>
+    {{else}}
+    <p style="text-align: center;">No transactions made at the moment.</p>
+    {{/each}}
+</div>
