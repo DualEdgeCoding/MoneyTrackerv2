@@ -3,7 +3,10 @@
 <form action="/transaction/add" method="post">
     <div class="form-group">
         <label for="type">Type of Transaction</label>
-        <input type="text" name="type" id="type" class="form-control" placeholder="e.g. withdrawal, deposit" required>
+        <select name="type" id="type">
+            <option value="withdrawal" selected>Withdrawal</option>
+            <option value="deposit">Deposit</option>
+        </select>
     </div>
     <div class="form-group">
         <label for="purpose">Purpose of Transcation</label>

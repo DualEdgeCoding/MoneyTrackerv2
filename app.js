@@ -20,17 +20,29 @@ const exphbs = require('express-handlebars')
 const methodOverride = require("method-override")
 const bodyParser = require("body-parser")
 const db = require("./db");
+const Handlebars = require("handlebars");
+const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
 
 const app = express();
 
 //set template engine
-app.engine("handlebars", exphbs({defaultLayout: "main"}));
+app.engine("handlebars", exphbs({
+    defaultLayout: "main",
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    helpers:{
+        ifEquals: (str1, str2, options) => {
+            return str1 == str2 ? options.fn(this) : options.inverse(this);
+        }
+    } 
+}));
 app.set("view engine", "handlebars");
 
 //middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
+app.use(express.static("public"));
+
 app.use("/transaction", require("./routes/transactions"));
 app.use("/api", require("./routes/api"));
 

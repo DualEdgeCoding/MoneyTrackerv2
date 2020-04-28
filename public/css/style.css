@@ -1,4 +1,13 @@
 .transaction {
-    background-color: grey;
+    background-color: #eeeeee;
+    border-radius: 5px;
+}
+
+body {
+    background-image: url("../img/background.jpeg");
+}
+
+#tally {
+    background-color: #eeeeee;
     border-radius: 5px;
 }

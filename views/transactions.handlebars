@@ -1,6 +1,6 @@
 <div class="container">
     {{#each transactions}}
-        <div class="card transaction">
+        <div class="card transaction" style="margin:10px;">
             <div class="card-body">
                 <h4 class="card-title">{{type}}</h4>
                 <div class="inline-block">
@@ -11,9 +11,37 @@
                 <br>
                 <p>ID: {{id}}</p>
                 <p class="card-footer text-muted">{{date}}</p>
+                <a href="/transaction/edit/{{ id }}" class="btn btn-info">Edit</a>
+                <a href="/transaction/delete/{{ id }}" class="btn btn-danger">Delete</a>
             </div>
         </div>
     {{else}}
     <p style="text-align: center;">No transactions made at the moment.</p>
     {{/each}}
 </div>
+<div class="container" id="tally">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each transactions}}
+                <tr>
+                    <td>{{purpose}}</td>
+                    <td>{{type}}</td>
+                    <td>${{amount}}</td>
+                    <!-- TODO add check for withdrawal or deposit, then add minus sign before amount when neccessary. -->
+                </tr>
+                {{/each}}
+                <tr>
+                    <td></td>
+                    <td>Total:</td>
+                    <td>{{total}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

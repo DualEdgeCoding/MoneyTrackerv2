@@ -25,8 +25,9 @@ const uuid = require("uuid");
 router.get("/", (req, res) => {
     Transaction.findAll()
         .then(transactions => {
-            console.log(transactions);
-            res.render("transactions", {transactions});
+            var total = 0;
+            transactions.forEach((trans) => total += parseFloat(trans.amount));
+            res.render("transactions", {transactions, transactions, total: total.toFixed(2)});
         })
         .catch(err => {
             console.error(err);
@@ -53,6 +54,32 @@ router.route("/add")
     .catch(err => {
         console.error(err);
         res.sendStatus(400);
+    })
+});
+
+router.get("/edit/:id", (req, res) => {
+    Transaction.findByPk(req.params.id)
+    .then(trans => res.render("edit", {
+        trans
+    }))
+    .catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+    })
+});
+
+router.put("/edit/:id", (req, res) => {
+    Transaction.update({
+        type:req.body.type,
+        purpose: req.body.purpose,
+        description: req.body.description,
+        amount: req.body.amount,
+        date: new Date(req.body.date)
+    }, {where: {id: req.params.id}})
+    .then(trans => res.redirect("/transaction"))
+    .catch(err => {
+        console.error(err);
+        res.sendStatus(500);
     })
 });
 
