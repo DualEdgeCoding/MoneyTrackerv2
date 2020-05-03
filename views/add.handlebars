@@ -3,13 +3,13 @@
 <form action="/transaction/add" method="post">
     <div class="form-group">
         <label for="type">Type of Transaction</label>
-        <select name="type" id="type">
+        <select name="type" id="type" class="custom-select">
             <option value="withdrawal" selected>Withdrawal</option>
             <option value="deposit">Deposit</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="purpose">Purpose of Transcation</label>
+        <label for="purpose">Purpose of Transcaction</label>
         <input type="text" name="purpose" id="purpose" class="form-control" placeholder="e.g. food, taxi, misc, etc..." required>
     </div>
     <div class="form-group">

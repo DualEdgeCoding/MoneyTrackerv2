@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
     Transaction.findAll()
         .then(transactions => {
             var total = 0;
-            transactions.forEach((trans) => total += parseFloat(trans.amount));
+            transactions.forEach((trans) => trans.type == "withdrawal" ? total -= parseFloat(trans.amount) : total += parseFloat(trans.amount));
             res.render("transactions", {transactions, transactions, total: total.toFixed(2)});
         })
         .catch(err => {
@@ -77,6 +77,24 @@ router.put("/edit/:id", (req, res) => {
         date: new Date(req.body.date)
     }, {where: {id: req.params.id}})
     .then(trans => res.redirect("/transaction"))
+    .catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+    })
+});
+
+router.get("/delete/:id", (req, res) => {
+    Transaction.findOne({where:{id: req.params.id}})
+    .then(trans => {
+        if(trans != null) {
+            Transaction.destroy({where:{id: req.params.id}})
+            .then(() => {
+                res.redirect("/transaction");
+            });
+        } else {
+            res.sendStatus(400);
+        }
+    })
     .catch(err => {
         console.error(err);
         res.sendStatus(500);
