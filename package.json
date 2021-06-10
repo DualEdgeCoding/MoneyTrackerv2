@@ -4,7 +4,8 @@
   "description": "money tracker app",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon"
+    "test": "nodemon",
+    "start": "node app.js"
   },
   "author": "weebkun",
   "license": "Apache-2.0",
