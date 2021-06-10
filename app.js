@@ -38,8 +38,8 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 
 //middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
 app.use(express.static("public"));
 
@@ -50,6 +50,7 @@ app.get("/", (req, res) => res.render("home"));
 
 //test connection to db
 db.authenticate()
+    .then(() => db.sync({alter: true}))
     .then(() => console.log("database connection to localhost successful."))
     .catch(err => console.error(err));
 

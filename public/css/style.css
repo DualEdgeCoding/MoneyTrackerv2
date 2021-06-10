@@ -11,3 +11,14 @@ body {
     background-color: #eeeeee;
     border-radius: 5px;
 }
+
+#home {
+    text-align: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+footer {
+    margin-top:70px;
+}

@@ -17,8 +17,7 @@
 
 const sequelize = require('sequelize');
 
-module.exports = new sequelize("moneytracker", "tracker", "MoneyTracker2020", {
-    host: "localhost",
+module.exports = new sequelize(process.env.CLEARDB_DATABASE_URL, {
     dialect: "mysql",
     define: {
         timestamps: false
