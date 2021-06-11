@@ -64,7 +64,7 @@ db.authenticate()
     .catch(err => console.error(err));
 
 app.route("/login")
-    .get((req, res) => res.render("/login", {title: "login"}))
+    .get((req, res) => res.render("login", {title: "login"}))
     .post((req, res) => {
         bcrypt.compare(req.body.password, process.env.password)
             .then(match => {
