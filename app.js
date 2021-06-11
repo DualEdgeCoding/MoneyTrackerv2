@@ -52,10 +52,7 @@ app.use(session({
 app.use("/transaction", require("./routes/transactions"));
 app.use("/api", require("./routes/api"));
 
-app.get("/", (req, res) => {
-    if(req.session.loggedIn) res.render("home");
-    else res.redirect("/login");
-});
+app.get("/", (req, res) => res.render("home", {title: "home", loggedIn: req.session.loggedIn}));
 
 //test connection to db
 db.authenticate()
@@ -64,7 +61,7 @@ db.authenticate()
     .catch(err => console.error(err));
 
 app.route("/login")
-    .get((req, res) => res.render("login", {title: "login"}))
+    .get((req, res) => res.render("login", {title: "login", loggedIn: req.session.loggedIn}))
     .post((req, res) => {
         bcrypt.compare(req.body.password, process.env.password)
             .then(match => {

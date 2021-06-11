@@ -22,12 +22,17 @@ const db = require("../db");
 const Transaction = require("../models/Transaction");
 const uuid = require("uuid");
 
+router.use((req, res, next) => {
+    if(req.session.loggedIn) next();
+    else res.redirect("/login");
+});
+
 router.get("/", (req, res) => {
     Transaction.findAll()
         .then(transactions => {
             var total = 0;
             transactions.forEach((trans) => trans.type == "withdrawal" ? total -= parseFloat(trans.amount) : total += parseFloat(trans.amount));
-            res.render("transactions", {transactions, transactions, total: total.toFixed(2)});
+            res.render("transactions", {title: "Transactions", transactions, total: total.toFixed(2), loggedIn: req.session.loggedIn});
         })
         .catch(err => {
             console.error(err);
@@ -36,7 +41,7 @@ router.get("/", (req, res) => {
 });
 
 router.route("/add")
-.get((req, res) => res.render("add"))
+.get((req, res) => res.render("add", {title: "Add Transaction", loggedIn: req.session.loggedIn}))
 .post((req, res) => {
     console.log(req.body);
     let {type, purpose, amount, date, description} = req.body;
@@ -57,18 +62,19 @@ router.route("/add")
     })
 });
 
-router.get("/edit/:id", (req, res) => {
+router.route("/edit/:id")
+    .get((req, res) => {
     Transaction.findByPk(req.params.id)
     .then(trans => res.render("edit", {
-        trans
+        title: "Edit Transaction",
+        trans,
+        loggedIn: req.session.loggedIn
     }))
     .catch(err => {
         console.error(err);
         res.sendStatus(500);
     })
-});
-
-router.put("/edit/:id", (req, res) => {
+}).put((req, res) => {
     Transaction.update({
         type:req.body.type,
         purpose: req.body.purpose,
