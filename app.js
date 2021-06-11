@@ -42,7 +42,7 @@ app.set("view engine", "handlebars");
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
-app.use(express.static("public/"));
+app.use(express.static(__dirname + "/public/"));
 app.use(session({
     key: "tracker",
     secret: "tracker",
