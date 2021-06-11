@@ -22,12 +22,12 @@
                     {{#unless loggedIn}}
                     <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                     {{/unless}}
-                    {{#if loggedIn}}
+                </ul>
+                {{#if loggedIn}}
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 </ul>
                 {{/if}}
-                </ul>
             </div>
         </nav>
         {{{body}}}
