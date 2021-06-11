@@ -72,6 +72,9 @@ app.route("/login")
                     req.session.loggedIn = true;
                     req.session.username = "weeb";
                     res.redirect("/");
+                } else {
+                    res.send("<script>alert('password incorrect')</script>");
+                    res.redirect("/login");
                 }
             });
     });
