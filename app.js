@@ -18,10 +18,11 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const methodOverride = require("method-override")
-const bodyParser = require("body-parser")
 const db = require("./db");
 const Handlebars = require("handlebars");
 const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 
@@ -42,17 +43,38 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
 app.use(express.static("public"));
+app.use(session({
+    key: "tracker",
+    secret: "tracker",
+    saveUninitialized: false
+}));
 
 app.use("/transaction", require("./routes/transactions"));
 app.use("/api", require("./routes/api"));
 
-app.get("/", (req, res) => res.render("home"));
+app.get("/", (req, res) => {
+    if(req.session.loggedIn) res.render("home");
+    else res.redirect("/login");
+});
 
 //test connection to db
 db.authenticate()
     .then(() => db.sync({alter: true}))
     .then(() => console.log("database connection to localhost successful."))
     .catch(err => console.error(err));
+
+app.route("/login")
+    .get((req, res) => res.render("/login", {title: "login"}))
+    .post((req, res) => {
+        bcrypt.compare(req.body.password, process.env.password)
+            .then(match => {
+                if(match) {
+                    req.session.loggedIn = true;
+                    req.session.username = "weeb";
+                    res.redirect("/");
+                }
+            });
+    });
 
 //start app and listen on specified port.
 const port = process.env.PORT || 5000;
