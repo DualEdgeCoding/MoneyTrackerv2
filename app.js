@@ -73,11 +73,17 @@ app.route("/login")
                     req.session.username = "weeb";
                     res.redirect("/");
                 } else {
-                    res.send("<script>alert('password incorrect')</script>");
                     res.redirect("/login");
                 }
             });
     });
+
+app.get("/logout", (req, res) => {
+    req.session.destroy((err => {
+        if(err) res.send(err);
+        else res.redirect("/");
+    }));
+});
 
 //start app and listen on specified port.
 const port = process.env.PORT || 5000;
